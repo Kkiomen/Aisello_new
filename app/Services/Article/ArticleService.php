@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Article;
 
+use App\Enums\OpenAiModel;
 use App\Models\Article;
 use App\Prompts\Abstract\Enums\OpenApiResultType;
 use App\Prompts\GenerateArticleBasicInformationToOtherLanguagePrompt;
@@ -261,8 +262,12 @@ class ArticleService
         do{
             try{
 
-                $jsonContent = GenerateArticleBasicInformationToOtherLanguagePrompt::generateContent(userContent: json_encode($article->json_content),
-                    resultType: OpenApiResultType::JSON_OBJECT, dataPrompt: ['language' => $language]);
+                $jsonContent = GenerateArticleBasicInformationToOtherLanguagePrompt::generateContent(
+                    userContent: json_encode($article->json_content),
+                    model: OpenAiModel::GPT4O,
+                    resultType: OpenApiResultType::JSON_OBJECT,
+                    dataPrompt: ['language' => $language]
+                );
                 $jsonContent = json_decode($jsonContent, true);
                 if(!isset($jsonContent[0]) || count($jsonContent) === 1){
                     foreach ($jsonContent as $key => $value){
