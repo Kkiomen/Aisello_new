@@ -28,6 +28,9 @@ class HomeController extends Controller
             $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(3)->get();
         }
 
+        if($info->to_view === null){
+            dd('WYGENERUJ CMS PAGE');
+        }
 
 
         return view('views_basic.welcome', array_merge(
