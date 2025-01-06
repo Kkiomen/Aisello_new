@@ -6,7 +6,9 @@ namespace App\Services;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Services\Library\SitemapGenerator;
+use Illuminate\Support\Str;
 
 class SitemapService
 {
@@ -20,6 +22,19 @@ class SitemapService
 
         $sitemap->addItem('/', '1.0', 'daily', $date);
         $sitemap->addItem(route('blog', [], false), '0.8', 'daily', $date);
+
+
+        // ============= TAGI ==================
+        $tags = Tag::where('language', env('APP_LOCALE'))->get();
+        foreach ($tags as $tag){
+            $sitemap->addItem(
+                loc: route('blogTag', ['tag' => Str::slug($tag->name)], false),
+                priority: '0.3',
+                changefreq: 'weekly',
+                lastmod: $date
+            );
+        }
+
 
         // Add different category posts
         $categories = static::prepareCategoriesBlog();

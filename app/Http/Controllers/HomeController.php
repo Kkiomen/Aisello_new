@@ -6,9 +6,12 @@ use App\Mail\InformationContact;
 use App\Models\Category;
 use App\Models\CmsPage;
 use App\Models\Article;
+use App\Models\Tag;
+use App\Models\TagArticle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -17,7 +20,14 @@ class HomeController extends Controller
     {
         $info = CmsPage::find(1);
 
-        $randomArticles = Article::where('is_published', true)->where('type', 'normal')->inRandomOrder()->take(3)->get();
+        if(env('LANGUAGE_MODE') == 'strict'){
+            $defaultLangue = env('APP_LOCALE');
+
+            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
+        }else{
+            $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(3)->get();
+        }
+
 
 
         return view('views_basic.welcome', array_merge(
@@ -57,12 +67,18 @@ class HomeController extends Controller
     }
     public function article(Request $request, string $articleSlug): View
     {
-        $article = Article::where('slug', $articleSlug)->first();
+        $defaultLangue = env('APP_LOCALE');
+        $article = Article::where('slug', $articleSlug)->where('language', $defaultLangue)->first();
         if(!$article || $article->contents == null){
             abort(404);
         }
 
-        $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->where('type', 'normal')->inRandomOrder()->take(3)->get();
+        if(env('LANGUAGE_MODE') == 'strict'){
+            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
+
+        }else{
+            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->inRandomOrder()->take(3)->get();
+        }
 
         return view('views_basic.article', [
             'article' => $article,
@@ -70,8 +86,6 @@ class HomeController extends Controller
             'randomArticles' => $randomArticles
         ]);
     }
-
-
 
 
     // ============== BLOG ==============
@@ -83,7 +97,17 @@ class HomeController extends Controller
 
         $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
 
-        $articles = Article::where('type', 'normal')->where('is_published', true)->orderBy('created_at', 'desc')->paginate(10);
+        if(env('LANGUAGE_MODE') == 'strict') {
+
+            $articles = Article::where('is_published', true)
+                ->where('language', env('APP_LOCALE'))
+                ->orderBy('created_at', 'desc')->paginate(10);
+        }else{
+            $articles = Article::where('is_published', true)
+                ->orderBy('created_at', 'desc')->paginate(10);
+        }
+
+
         $info = CmsPage::find(1);
 
         return view('views_basic.blog',array_merge(
@@ -92,6 +116,75 @@ class HomeController extends Controller
                 'categories' => $categories,
                 'articles' => $articles,
                 'currentCategory' => null
+            ]
+        ));
+    }
+
+    public function blogTag(string $slug): View
+    {
+        $tag = Tag::where('slug', $slug)->where('language', env('APP_LOCALE'))->first();
+
+        if(!$tag){
+            $tags = Tag::where('language', env('APP_LOCALE'))->get();
+
+            foreach ($tags as $currentTag){
+                if(Str::slug($currentTag->name) == $slug){
+                    $currentTag->slug = $slug;
+                    $currentTag->save();
+
+                    $tag = $currentTag;
+                    break;
+                }
+            }
+
+        }
+
+        if(!$tag){
+            abort(404);
+        }
+
+        $articleTagIds = TagArticle::where('tag_id', $tag->id)->pluck('article_id');
+
+        $uniqueCategoryIds = Article::whereNotNull('category_id')->whereIn('id', $articleTagIds->toArray())->where('is_published', true)
+            ->distinct()
+            ->pluck('category_id');
+
+
+        $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
+        $coursesLesson = [];
+        $normalArticles = [];
+
+        if(env('LANGUAGE_MODE') == 'strict') {
+            $articles = Article::where('is_published', true)
+                ->where('language', env('APP_LOCALE'))
+                ->whereIn('id', $articleTagIds->toArray())
+                ->orderBy('created_at', 'desc')->paginate(10);
+
+
+            foreach ($articles as $article){
+                $normalArticles[] = $article;
+            }
+
+        }else{
+            $articles = Article::where('is_published', true)
+                ->whereIn('id', $articleTagIds->toArray())
+                ->orderBy('created_at', 'desc')->paginate(10);
+
+            foreach ($articles as $article){
+                $normalArticles[] = $article;
+            }
+        }
+
+        $info = CmsPage::find(1);
+
+        return view('views_basic.blog_tag',array_merge(
+            $info->to_view,
+            [
+                'categories' => $categories,
+                'articles' => $normalArticles,
+                'coursesLesson' => $coursesLesson,
+                'currentCategory' => null,
+                'tag' => $tag
             ]
         ));
     }

@@ -12,6 +12,8 @@ use App\Prompts\GenerateArticleContentToOtherLanguagePrompt;
 use App\Prompts\GenerateArticleDecorateTextPrompt;
 use App\Services\CmsPageService;
 use App\Services\Generator\GeneratorArticleService;
+use App\Services\Generator\InternalUrlsGenerator;
+use App\Services\Generator\TagForArticleGenerator;
 use App\Services\Helper\GeneratorHelper;
 use App\Services\Helper\LanguageHelper;
 use App\Services\SitemapService;
@@ -113,7 +115,10 @@ class ArticleService
             }
             if(isset($article->view_content['basic_website_structure_is_published'])){
                 $article->is_published = boolval($article->view_content['basic_website_structure_is_published']);
+                TagForArticleGenerator::generate();
+                InternalUrlsGenerator::generate();
             }
+
             $article->save();
         }
 
