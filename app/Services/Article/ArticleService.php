@@ -261,15 +261,22 @@ class ArticleService
         do{
             try{
 
-                $jsonContent = GenerateArticleBasicInformationToOtherLanguagePrompt::generateContent(userContent: json_encode($article->json_content),
-                    resultType: OpenApiResultType::JSON_OBJECT, dataPrompt: ['language' => $language]);
-                $jsonContent = json_decode($jsonContent, true);
-                if(!isset($jsonContent[0]) || count($jsonContent) === 1){
-                    foreach ($jsonContent as $key => $value){
-                        $jsonContent = $value;
-                        break;
-                    }
+                do{
+                    $jsonContent = GenerateArticleBasicInformationToOtherLanguagePrompt::generateContent(
+                        userContent: json_encode($article->json_content),
+                        resultType: OpenApiResultType::JSON_OBJECT,
+                        dataPrompt: ['language' => $language]
+                    );
+                    $jsonContent = json_decode($jsonContent, true);
+                }while($jsonContent === null);
+
+                if(isset($jsonContent['content'])){
+                    $jsonContent = $jsonContent['content'];
                 }
+                if(isset($jsonContent['data'])){
+                    $jsonContent = $jsonContent['data'];
+                }
+
                 $viewContent = $this->prepareViewContentForArticle($jsonContent);
                 $incorrect = false;
 
