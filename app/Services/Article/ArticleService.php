@@ -306,13 +306,13 @@ class ArticleService
         $contents = [];
         foreach ($article->contents as $key => $content) {
             if ($content['type'] === 'text') {
-                $currentTranslatedContent = GenerateArticleContentToOtherLanguagePrompt::generateContent(userContent: $content['content'], dataPrompt: ['language' => $language]);
+                $currentTranslatedContent = GenerateArticleContentToOtherLanguagePrompt::generateContentTextErrorsLoop(userContent: $content['content'], dataPrompt: ['language' => $language]);
                 $currentTranslatedContent = str_replace(['```html','```','``', '` `html', '``html', '`html', '`'], '', $currentTranslatedContent);
 
                 $content['content'] = $currentTranslatedContent;
                 $contents[$key] = $content;
             }else if($content['type'] === 'image'){
-                $currentTranslatedContent = GenerateArticleContentToOtherLanguagePrompt::generateContent(userContent: $content['alt'], dataPrompt: ['language' => $language]);
+                $currentTranslatedContent = GenerateArticleContentToOtherLanguagePrompt::generateContentTextErrorsLoop(userContent: $content['alt'], dataPrompt: ['language' => $language]);
                 $content['alt'] = $currentTranslatedContent;
                 $contents[$key] = $content;
             }
