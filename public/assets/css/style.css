@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.logo_oatllo{
+    font-size: 2rem; font-weight: 700; font-family: 'Montserrat', sans-serif; color: #ffffff
+}
+
+.jetbrains_text{
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.jetbrains_bg_color{
+    background-color: #1e1f22;
+}
+.jetbrains_fill_color{
+    fill: #1e1f22;
+}
+
+.tag-description-theme{
+    h2,h3,h4,h5,h1{
+        color: white;
+    }
+}

@@ -26,7 +26,7 @@ Utwórz długi opis pełny słów kluczowych dla konkretnego tagu aby tag wysoko
 - Opis napisz w języku: '.$currentLanguage.'
 
 ### O czym jest blog:
-Blog Oattlo jest o programowaniu w PHP
+Blog Aisello jest o automatyzacji i sztucznej inteligencji
 ';
 
 

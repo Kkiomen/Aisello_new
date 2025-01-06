@@ -29,7 +29,7 @@ class SitemapService
         foreach ($tags as $tag){
             $sitemap->addItem(
                 loc: route('blogTag', ['tag' => Str::slug($tag->name)], false),
-                priority: '0.3',
+                priority: '0.2',
                 changefreq: 'weekly',
                 lastmod: $date
             );

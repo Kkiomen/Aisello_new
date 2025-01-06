@@ -21,6 +21,12 @@
     <meta property="og:url" content="{{ $article->getRoute() }}" />
     <meta property="og:image" content="{{ $article->view_content['basic_website_structure_op_image_img_file'] }}" />
     <meta property=”og:type” content=”article” />
+
+    @if(!empty($article->structure_data_google))
+        <script type="application/ld+json">
+            {!! $article->structure_data_google !!}
+        </script>
+    @endif
 </head>
 <body>
 
@@ -33,8 +39,8 @@
         <div class="mx-auto max-w-7xl">
             <div class="px-6 pt-6 lg:max-w-2xl lg:pl-8 lg:pr-0">
                 <nav class="flex items-center justify-between lg:justify-start" aria-label="Global">
-                    <div class="text-black uppercase" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
-                        Bartłomiej Biernat
+                    <div class="text-black lowercase" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
+                        aisello
                     </div>
                     <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700 lg:hidden"  @click="open = !open">
                         <span class="sr-only">Open main menu</span>
@@ -43,9 +49,8 @@
                         </svg>
                     </button>
                     <div class="hidden lg:ml-12 lg:flex lg:gap-x-14">
-                        <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-gray-900">Strona główna</a>
+                        <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-gray-900">{{ __('basic.home') }}</a>
                         <a href="{{ route('blog') }}" class="text-sm font-semibold leading-6 text-gray-900">Blog</a>
-                        <a href="{{ route('index') }}#contact" class="text-sm font-semibold leading-6 text-gray-900">Kontakt</a>
                     </div>
                 </nav>
             </div>
@@ -134,10 +139,6 @@
 
                         <h1 class="text-3xl font-bold mt-3 sm:mt-0 tracking-tight text-gray-900 sm:text-5xl">{{ $article->name }}</h1>
                         <p class="mt-6 text-lg leading-8 text-gray-600">{{ $article->short_description }}</p>
-                        <div class="mt-10 flex items-center gap-x-6">
-                            <a href="{{ route('index') }}#contact" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Skorzystaj z usług</a>
-                            <a href="#article-content" class="text-sm font-semibold leading-6 text-gray-900">Przeczytaj artykuł <span aria-hidden="true">→</span></a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -221,7 +222,7 @@
 <footer class="bg-gray-900">
     <div class="mx-auto max-w-7xl px-6 pb-8 lg:px-8 ">
         <div class="border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
-            <p class="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">&copy; {{ date('Y') }} Serwis elektroniki - Bartłomiej Biernat</p>
+            <p class="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">&copy; {{ date('Y') }} aisello</p>
         </div>
     </div>
 </footer>

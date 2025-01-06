@@ -1,182 +1,160 @@
 <!doctype html>
-<html>
+<html lang="{{ env('APP_LANG_HTML') }}"l>
 <head>
     <meta charset="UTF-8">
-    <title>Naprawa Automatyki Przemysłowej Gliwice – Bartłomiej Bernat</title>
-    <meta name="description" content="Profesjonalna naprawa automatyki przemysłowej w Gliwicach. Bartłomiej Bernat – serwis, diagnostyka i modernizacja systemów automatyki. Gwarancja jakości i precyzji.">
+    <title>{{ __('basic.meta_title') }}</title>
+    <meta name="description" content="{{ __('basic.meta_description') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    {!! \App\Services\HomeService::getTagManagerHEAD() !!}
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+
 </head>
 <body>
+{!! \App\Services\HomeService::getTagManagerBODY() !!}
 
+<div class="relative overflow-hidden bg-gray-800" x-data="{ open: true }">
+    <div class="hidden sm:absolute sm:inset-y-0 sm:block sm:h-full sm:w-full" aria-hidden="true">
+        <div class="relative mx-auto h-full max-w-7xl">
+            <svg class="absolute right-full translate-x-1/4 translate-y-1/4 transform lg:translate-x-1/2" width="404" height="784" fill="none" viewBox="0 0 404 784">
+                <defs>
+                    <pattern id="4522f7d5-8e8c-43ee-89bd-ad34cbfb07fa" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <rect x="0" y="0" width="4" height="4" class="text-gray-800" fill="currentColor" />
+                    </pattern>
+                </defs>
+                <rect width="404" height="784" fill="url(#4522f7d5-8e8c-43ee-89bd-ad34cbfb07fa)" />
+            </svg>
+            <svg class="absolute left-full -translate-x-1/4 -translate-y-3/4 transform md:-translate-y-1/2 lg:-translate-x-1/2" width="404" height="784" fill="none" viewBox="0 0 404 784">
+                <defs>
+                    <pattern id="5d0dd344-b041-4d26-bec4-8d33ea57ec9b" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <rect x="0" y="0" width="4" height="4" class="text-gray-700" fill="currentColor" />
+                    </pattern>
+                </defs>
+                <rect width="404" height="784" fill="url(#5d0dd344-b041-4d26-bec4-8d33ea57ec9b)" />
+            </svg>
+        </div>
+    </div>
 
-<div class="bg-gray-900">
-    <header class="absolute inset-x-0 top-0 z-50" x-data="{ open: true }">
-        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-            <div class="flex lg:flex-1">
-                <div class="text-white uppercase" id="logo_header" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
-                    {{ $header_title }}
+    <div class="relative pb-16 pt-6 sm:pb-24">
+        <div>
+            <div class="mx-auto max-w-7xl px-4 sm:px-6">
+                <nav class="relative flex items-center justify-between sm:h-10 md:justify-center" aria-label="Global">
+                    <div class="flex flex-1 items-center md:absolute md:inset-y-0 md:left-0">
+                        <div class="flex w-full items-center justify-between md:w-auto">
+                            <a href="{{ route('index')  }}" class="logo_oatllo">
+                                aisello
+                            </a>
+                            <div class="-mr-2 flex items-center md:hidden">
+                                <button type="button" @click="open = !open" class="relative inline-flex items-center justify-center rounded-md bg-gray-50 p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                                    <span class="absolute -inset-0.5"></span>
+                                    <span class="sr-only">Open main menu</span>
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex md:space-x-10">
+                        <a href="{{ route('index') }}" class="font-medium text-gray-500 hover:text-gray-900">{{ __('basic.home') }}</a>
+                        <a href="{{ route('blog') }}" class="font-medium text-gray-500 hover:text-gray-900">Blog</a>
+                    </div>
+                    <div class="hidden md:absolute md:inset-y-0 md:right-0 md:flex md:items-center md:justify-end">
+            <span class="inline-flex rounded-md shadow">
+{{--              <a href="#" class="inline-flex items-center rounded-md border border-transparent bg-white px-4 py-2 text-base font-medium text-indigo-600 hover:bg-gray-50">Log in</a>--}}
+            </span>
+                    </div>
+                </nav>
+            </div>
+
+            <!--
+              Mobile menu, show/hide based on menu open state.
+
+              Entering: "duration-150 ease-out"
+                From: "opacity-0 scale-95"
+                To: "opacity-100 scale-100"
+              Leaving: "duration-100 ease-in"
+                From: "opacity-100 scale-100"
+                To: "opacity-0 scale-95"
+            -->
+            <div class="absolute inset-x-0 top-0 z-10 origin-top-right transform p-2 transition md:hidden"  x-show="!open">
+                <div class="overflow-hidden rounded-lg bg-white shadow-md ring-1 ring-black ring-opacity-5">
+                    <div class="flex items-center justify-between px-5 pt-4">
+                        <div class="logo_oatllo text-black">
+                            aisello
+                        </div>
+                        <div class="-mr-2">
+                            <button type="button" @click="open = !open" class="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                                <span class="absolute -inset-0.5"></span>
+                                <span class="sr-only">Close menu</span>
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="px-2 pb-3 pt-2">
+                        <a href="{{ route('index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-300">{{ __('basic.home') }}</a>
+                        <a href="{{ route('blog') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-300">Blog</a>
+                    </div>
+                    {{--                    <a href="#" class="block w-full bg-gray-50 px-5 py-3 text-center font-medium text-indigo-600 hover:bg-gray-100">Log in</a>--}}
                 </div>
             </div>
-            <div class="flex lg:hidden">
-                <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400"  @click="open = !open">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
-            </div>
-            <div class="hidden lg:flex lg:gap-x-12" id="navbar_desktop">
-                <a href="{{ $navbar_1_btn_href }}" class="text-sm font-semibold leading-6 text-white">{{ $navbar_1_btn_text }}</a>
-                <a href="{{ $navbar_2_btn_href }}" class="text-sm font-semibold leading-6 text-white">{{ $navbar_2_btn_text }}</a>
-                <a href="{{ $navbar_3_btn_href }}" class="text-sm font-semibold leading-6 text-white">{{ $navbar_3_btn_text }}</a>
-            </div>
-            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+        </div>
 
+        <main class="mx-auto mt-16 max-w-7xl px-4 sm:mt-24">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-200 sm:text-5xl md:text-6xl">
+                    <span class="block xl:inline">{{ __('basic.blog_header') }}</span>
+                </h1>
+                <p class="mx-auto mt-3 max-w-md text-base text-gray-500 sm:text-lg md:mt-5 md:max-w-3xl md:text-xl">{{ __('basic.blog_subheader') }}</p>
             </div>
-        </nav>
-        <!-- Mobile menu, show/hide based on menu open state. -->
+        </main>
+    </div>
+</div>
 
-        <div class="lg:hidden"  role="dialog" x-show="!open" aria-modal="true">
-            <!-- Background backdrop, show/hide based on slide-over state. -->
-            <div class="fixed inset-0 z-50"></div>
-            <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
-                <div class="flex items-center justify-between">
-                    <a href="#" class="-m-1.5 p-1.5">
-                        <span class="sr-only">Your Company</span>
+
+
+<div class="jetbrains_bg_color py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+
+            @foreach($articles as $article)
+                <article class="flex flex-col items-start justify-between">
+                    <a href="{{ $article->getRoute() }}">
+                        <div class="relative w-full">
+                            <img  src="{{ $article->image }}" alt="{{ !empty($article->view_content['basic_website_structure_image_img_alt']) ? $article->view_content['basic_website_structure_image_img_alt'] : $article->name }}" class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]">
+                            <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+                        </div>
                     </a>
-                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400"  @click="open = !open">
-                        <span class="sr-only">Close menu</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="mt-6 flow-root">
-                    <div class="-my-6 divide-y divide-gray-500/25">
-                        <div class="space-y-2 py-6" id="navbar_mobile">
-                            <a href="{{ $navbar_1_btn_href }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">{{ $navbar_1_btn_text }}</a>
-                            <a href="{{ $navbar_2_btn_href }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">{{ $navbar_2_btn_text }}</a>
-                            <a href="{{ $navbar_3_btn_href }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">{{ $navbar_3_btn_text }}</a>
+                    <div class="max-w-xl">
+                        <div class="mt-8 flex items-center gap-x-4 text-xs">
+                            <time datetime="{{ $article->created_at->format('Y-m-d') }}" class="text-gray-300">{{ $article->created_at->format('Y-m-d') }}</time>
+                        </div>
+                        <div class="group relative">
+                            <h3 class="mt-3 text-lg/6 font-semibold text-gray-300 group-hover:text-gray-200">
+                                <a href="{{ $article->getRoute() }}">
+                                    <span class="absolute inset-0"></span>
+                                    {{ $article->name }}
+                                </a>
+                            </h3>
+                            <p class="mt-5 line-clamp-3 text-sm/6 text-gray-500">{{ $article->getShortDescriptionToBlogList() }}</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="relative isolate overflow-hidden pt-14" id="header_main">
-        <img src="{{ $header_image_full_img_file  }}" alt="{{ $header_image_full_img_alt }}" class="absolute inset-0 -z-10 h-full w-full object-cover">
-        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-            <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-        </div>
-        <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+                </article>
+            @endforeach
 
-            <div class="text-center px-3 sm:px-0">
-                <h1 class="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">{{ $header_head_1 }}</h1>
-                <p class="mt-6 text-lg leading-8 text-gray-300">{{ $header_head_2 }}</p>
-                <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="{{ $header_button_1_btn_href }}" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">{{ $header_button_1_btn_text }}</a>
-                    <a href="{{ $header_button_2_btn_href }}" class="text-sm font-semibold leading-6 text-white">{{ $header_button_2_btn_text }} <span aria-hidden="true">→</span></a>
-                </div>
-            </div>
-        </div>
-        <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-            <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+            <!-- More posts... -->
         </div>
     </div>
 </div>
-
-
-
-
-<div>
-    <div class="relative isolate z-50 shadow">
-
-        <div class="absolute inset-x-0 top-0 -z-10 bg-white pt-16 shadow-lg ring-1 ring-gray-900/5">
-            <div class="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-6 py-10 lg:grid-cols-[1fr_2fr] lg:px-8">
-                @if($categories->count() > 0)
-                    <div class="grid grid-cols-1 gap-x-4 sm:gap-x-8">
-                        <div>
-                            <h3 class="text-sm font-medium leading-6 text-gray-500">Kategorie</h3>
-                            <div class="mt-6 flow-root">
-                                <div class="-my-2">
-                                    <!-- Tu wyświetlać kategorie -->
-                                    @foreach($categories as $category)
-                                        <a href="{{ route('blog.list.category', ['slug' => $category->slug]) }}" class="flex gap-x-4 py-2 text-sm font-semibold leading-6 text-gray-900">
-
-                                            @if(!empty($currentCategory) && $currentCategory == $category->name)
-                                                <strong>{{ $category->name }}</strong>
-                                            @else
-                                                {{ $category->name }}
-                                            @endif
-                                        </a>
-                                    @endforeach
-                                    <!-- Tu wyświetlać kategorie -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                <div class="grid grid-cols-1 gap-10 sm:gap-8 lg:grid-cols-2">
-
-                    @foreach($articles as $article)
-                        <article class="relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch">
-                            <div class="relative flex-none">
-                                <img class="aspect-[2/1] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[16/9] sm:h-32 lg:h-auto" src="{{ $article->image }}" alt="{{ !empty($article->view_content['basic_website_structure_image_img_alt']) ? $article->view_content['basic_website_structure_image_img_alt'] : $article->name }}">
-                                <div class="absolute inset-0 rounded-lg ring-1 ring-inset ring-gray-900/10"></div>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-x-4">
-                                    <time datetime="{{ $article->created_at->format('Y-m-d') }}" class="text-sm leading-6 text-gray-600">{{ $article->created_at->format('Y-m-d') }}</time>
-
-                                </div>
-                                <h4 class="mt-2 text-sm font-semibold leading-6 text-gray-900">
-                                    <a href="{{ $article->getRoute() }}">
-                                        <span class="absolute inset-0"></span>
-                                        {{ $article->name }}
-                                    </a>
-                                </h4>
-                                <p class="mt-2 text-sm leading-6 text-gray-600">{{ $article->getShortDescriptionToBlogList() }}</p>
-                            </div>
-                        </article>
-                    @endforeach
-                    <!-- Add more articles as needed -->
-
-
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-<footer class="bg-gray-900">
-    <div class="mx-auto max-w-7xl px-6 pb-8 lg:px-8 ">
-        <div class="border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
-            <p class="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">&copy; {{ date('Y') }} Serwis elektroniki - Bartłomiej Biernat</p>
-        </div>
-    </div>
-</footer>
-
-
 
 
 

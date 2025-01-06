@@ -27,6 +27,7 @@ Podczas tworzenia artykułu kieruj się poniższymi wytycznymi:
 - Liczba akapitów ma być różna aby było widać jakby człowiek przygotowywał tekst
 - nie używaj markdown a tylko html
 - część podsumowania nie może posiadać słowa "podsumowanie", "zakończenie" itd. ma to być płynne zakończenie
+- Pamiętaj o nagłówkach <h2> oraz <h3> dla lepszego SEO
 
 Każda część powinna mieścić się w przynajmniej 2000 znaków, a pierwsza oraz ostatnia obejmują odpowiednio wprowadzenie i zakończenie bez chamskiego podsumowania.
 
