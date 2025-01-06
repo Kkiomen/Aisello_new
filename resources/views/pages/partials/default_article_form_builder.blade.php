@@ -21,7 +21,7 @@
                 @endif
             @endif
 
-            @if($content['key'] === 'content-list')
+            @if(isset($content['key']) && $content['key'] === 'content-list')
                 @include('pages.partials.contents', ['content' => $content])
             @endif
 
