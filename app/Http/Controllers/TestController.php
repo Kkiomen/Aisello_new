@@ -20,7 +20,7 @@ class TestController extends Controller
     public function test(Request $request, ArticleService $articleService, ImageService $imageService)
     {
 
-        $articleService->generateArticleInOtherLanguage(3, 'en');
+        $articleService->generateArticleInOtherLanguage(1, 'Angielski');
 
         TagForArticleGenerator::generate();
 //        InternalUrlsGenerator::generate();

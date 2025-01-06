@@ -11,6 +11,7 @@ use App\Prompts\GenerateArticleBasicInformationToOtherLanguagePrompt;
 use App\Prompts\GenerateArticleContentPrompt;
 use App\Prompts\GenerateArticleContentToOtherLanguagePrompt;
 use App\Prompts\GenerateArticleDecorateTextPrompt;
+use App\Prompts\TranslateToEnglishPrompt;
 use App\Services\CmsPageService;
 use App\Services\Generator\GeneratorArticleService;
 use App\Services\Generator\InternalUrlsGenerator;
@@ -264,39 +265,24 @@ class ArticleService
     {
         $article = Article::findOrFail($articleId);
         $articleNewLanguage = new Article();
-        $incorrect = true;
-        $errors = 0;
-        do{
-            try{
 
-                do{
-                    $jsonContent = GenerateArticleBasicInformationToOtherLanguagePrompt::generateContent(
-                        userContent: json_encode($article->json_content),
-                        resultType: OpenApiResultType::JSON_OBJECT,
-                        dataPrompt: ['language' => $language]
-                    );
-                    $jsonContent = json_decode($jsonContent, true);
-                }while($jsonContent === null);
-
-                if(isset($jsonContent['content'])){
-                    $jsonContent = $jsonContent['content'];
+        $contentNew = $article->json_content;
+        foreach ($contentNew as &$element) {
+            if(!empty($element['content'])){
+                foreach ($element['content'] as &$content){
+                    if(($content['type'] === 'text' || $content['type'] === 'textarea') && !empty($content['value'])){
+                        $content['value'] = TranslateToEnglishPrompt::generateContentTextErrorsLoop(
+                            userContent: $content['value'],
+                            dataPrompt: ['language' => $language]
+                        );
+                    }
                 }
-                if(isset($jsonContent['data'])){
-                    $jsonContent = $jsonContent['data'];
-                }
-
-                $viewContent = $this->prepareViewContentForArticle($jsonContent);
-
-                $incorrect = false;
-
-            }catch (\Exception $exception){
-                $errors++;
             }
+        }
 
-        }while($incorrect && $errors < 3);
+        $viewContent = $this->prepareViewContentForArticle($contentNew);
 
-
-        $articleNewLanguage->json_content = $jsonContent;
+        $articleNewLanguage->json_content = $contentNew;
         $articleNewLanguage->language = LanguageHelper::getShortFromName($language);
         $articleNewLanguage->is_published = false;
         $articleNewLanguage->options_ai = $article->options_ai;
