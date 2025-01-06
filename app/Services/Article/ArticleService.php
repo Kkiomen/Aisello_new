@@ -194,12 +194,19 @@ class ArticleService
     {
         if (is_array($element) && isset($element[0])) {
             foreach ($element as &$content) {
+                if(!is_array($content)){
+                    continue;
+                }
+
                 $this->prepareViewContentForElement($content, $result);
             }
         }
 
         if (array_key_exists('content', $element) && is_array($element['content']) && isset($element['content'][0])) {
             foreach ($element['content'] as &$content) {
+                if(!is_array($content)){
+                    continue;
+                }
                 $this->prepareViewContentForElement($content, $result);
             }
         }
@@ -262,22 +269,24 @@ class ArticleService
         do{
             try{
 
-                $jsonContent = GenerateArticleBasicInformationToOtherLanguagePrompt::generateContent(
-                    userContent: json_encode($article->json_content),
-                    model: OpenAiModel::GPT4O,
-                    resultType: OpenApiResultType::JSON_OBJECT,
-                    dataPrompt: ['language' => $language]
-                );
+                do{
+                    $jsonContent = GenerateArticleBasicInformationToOtherLanguagePrompt::generateContent(
+                        userContent: json_encode($article->json_content),
+                        resultType: OpenApiResultType::JSON_OBJECT,
+                        dataPrompt: ['language' => $language]
+                    );
+                    $jsonContent = json_decode($jsonContent, true);
+                }while($jsonContent === null);
 
-//                $jsonContent = json_decode($jsonContent, true);
-//                if(!isset($jsonContent[0]) || count($jsonContent) === 1){
-//                    foreach ($jsonContent as $key => $value){
-//                        $jsonContent = $value;
-//                        break;
-//                    }
-//                }
+                if(isset($jsonContent['content'])){
+                    $jsonContent = $jsonContent['content'];
+                }
+                if(isset($jsonContent['data'])){
+                    $jsonContent = $jsonContent['data'];
+                }
 
                 $viewContent = $this->prepareViewContentForArticle($jsonContent);
+
                 $incorrect = false;
 
             }catch (\Exception $exception){
