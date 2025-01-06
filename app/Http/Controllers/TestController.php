@@ -19,6 +19,9 @@ class TestController extends Controller
 {
     public function test(Request $request, ArticleService $articleService, ImageService $imageService)
     {
+
+        $articleService->generateArticleInOtherLanguage(3, 'en');
+
         TagForArticleGenerator::generate();
 //        InternalUrlsGenerator::generate();
     }

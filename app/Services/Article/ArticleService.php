@@ -268,13 +268,15 @@ class ArticleService
                     resultType: OpenApiResultType::JSON_OBJECT,
                     dataPrompt: ['language' => $language]
                 );
-                $jsonContent = json_decode($jsonContent, true);
-                if(!isset($jsonContent[0]) || count($jsonContent) === 1){
-                    foreach ($jsonContent as $key => $value){
-                        $jsonContent = $value;
-                        break;
-                    }
-                }
+
+//                $jsonContent = json_decode($jsonContent, true);
+//                if(!isset($jsonContent[0]) || count($jsonContent) === 1){
+//                    foreach ($jsonContent as $key => $value){
+//                        $jsonContent = $value;
+//                        break;
+//                    }
+//                }
+
                 $viewContent = $this->prepareViewContentForArticle($jsonContent);
                 $incorrect = false;
 
